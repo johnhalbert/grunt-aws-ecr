@@ -13,7 +13,6 @@ const Promise = require('bluebird'),
 
 module.exports = function(grunt) {
   grunt.registerMultiTask('aws_ecr', 'Grunt plugin for AWS\'s Elastic Container Repository service.', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
     const options      = this.options(),
           ecr          = Promise.promisifyAll(new ECR(options)),
           { command,
@@ -21,7 +20,7 @@ module.exports = function(grunt) {
           done         = this.async();
 
     if (isEcrCommand(command))
-      runEcrCommand(command, this.data, callback)
+      runEcrCommand(command, this.data)
         .then(callback)
         .then(done)
         .catch(err => grunt.log.error(err.message));
@@ -52,8 +51,8 @@ module.exports = function(grunt) {
              .indexOf(cmd);
     }
 
-    function runEcrCommand(cmd, params, cb) {
-      return ecr[cmd](params, cb);
+    function runEcrCommand(cmd, params) {
+      return ecr[cmd](params);
     }
   });
 };

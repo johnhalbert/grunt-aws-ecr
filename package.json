@@ -1,7 +1,7 @@
 {
   "name": "grunt-aws-ecr",
   "description": "Grunt plugin for AWS's Elastic Container Repository service.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/johnhalbert/grunt-aws-ecr",
   "author": {
     "name": "John Halbert",
@@ -35,5 +35,9 @@
   },
   "keywords": [
     "gruntplugin"
-  ]
+  ],
+  "dependencies": {
+    "aws-sdk": "^2.162.0",
+    "bluebird": "^3.5.1"
+  }
 }
