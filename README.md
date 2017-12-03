@@ -37,53 +37,29 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+Options configure the ECR service provided by `aws-sdk`.  Valid options can be found in the [AWS JavaScript SDK documentation](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ECR.html#constructor-property).
 
-A string value that is used to do something with whatever.
+### Command
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+Whether your configuration has a single task or multiple targets, each must inlude a `command` property.  Commands are kebab case string in the style of the [AWS cli](http://docs.aws.amazon.com/cli/latest/reference/ecr/index.html#cli-aws-ecr) (e.g. `delete-repository`, `create-repository`, etc.).  CLI commands are all represented by methods in the [SDK ECR service](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ECR.html), except for `get-login`.
 
-A string value that is used to do something else with whatever else.
+### Params
+
+Each command corresponds to a method in the [SDK ECR service](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ECR.html).  Aside from `command`, noted above and `callback`, noted below, each property in a task's configuration is passed as a parameter to the SDK method.  Valid parameters can be found in the documentation for the corresponding method.  Methods have the same name as the corresponding command, but are in camel case.
+
+### Callback
+
+Each command will receive the callback you provide in its configuration.  The first and only argument will be the response from the AWS ECR service.  This differs from SDK documentation.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
 ```js
-grunt.initConfig({
-  aws_ecr: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
+{
+  command: 'get-authorization-token',
+  callback: data => console.log(JSON.stringify(data, null, 2)),
+  registryIds: ['STRING_VALUE']
+}
 ```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  aws_ecr: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
 _(Nothing yet)_

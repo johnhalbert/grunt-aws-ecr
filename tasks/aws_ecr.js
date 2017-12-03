@@ -12,20 +12,18 @@ const Promise = require('bluebird'),
       ECR     = require('aws-sdk/clients/ecr'),
 
 module.exports = function(grunt) {
-
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
-
   grunt.registerMultiTask('aws_ecr', 'Grunt plugin for AWS\'s Elastic Container Repository service.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     const options      = this.options(),
           ecr          = Promise.promisifyAll(new ECR(options)),
           { command,
-            callback } = this.data; 
+            callback } = this.data,
+          done         = this.async();
 
     if (isEcrCommand(command))
       runEcrCommand(command, this.data, callback)
         .then(callback)
+        .then(done)
         .catch(err => grunt.log.error(err.message));
 
     function isEcrCommand(cmd) {
@@ -43,7 +41,6 @@ module.exports = function(grunt) {
                 'get-download-url-for-layer',
                 'get-lifecycle-policy',
                 'get-lifecycle-policy-preview',
-                'get-login',
                 'get-repository-policy',
                 'initiate-layer-upload',
                 'list-images',
