@@ -37,7 +37,17 @@ grunt.initConfig({
 
 ### Options
 
-Options configure the ECR service provided by `aws-sdk`.  Valid options can be found in the [AWS JavaScript SDK documentation](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ECR.html#constructor-property).
+Options configure the ECR service provided by `aws-sdk`.  Valid options can be found in the [AWS JavaScript SDK documentation](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ECR.html#constructor-property).  Not all options can be used with this plugin alone.  Specifically `sessionToken`, `credentials` and `credentialsProvider` are unavailable with this plugin alone as they must be instances of classes provided by the AWS SDK not provided by this plugin.
+
+A minimum working configuration for options would be:
+
+```js
+{
+  accessKeyId:     'STRING_VALUE',
+  secretAccessKey: 'STRING_VALUE',
+  region:          'us-west-2'
+}
+```
 
 ### Command
 
@@ -55,11 +65,13 @@ Each command will receive the callback you provide in its configuration.  The fi
 
 ```js
 {
-  command: 'get-authorization-token',
-  callback: data => console.log(JSON.stringify(data, null, 2)),
-  registryIds: ['STRING_VALUE']
+  command:    'get-authorization-token',
+  callback:    data => console.log(JSON.stringify(data, null, 2)),
+  registryIds: [ 'STRING_VALUE' ]
 }
 ```
+
+`registryIds` in this example is a valid AWS account number in which repository(ies) exist.
 
 ## Release History
 _(Nothing yet)_

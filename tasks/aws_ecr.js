@@ -52,7 +52,16 @@ module.exports = function(grunt) {
     }
 
     function runEcrCommand(cmd, params) {
-      return ecr[cmd](params);
+      return ecr[`${kebabToCamel(cmd)}Async`](params);
+    }
+
+    function kebabToCamel(kebab) {
+      let camel = kebab.split('-').reduce((camel, part, i) => {
+        if (i > 0)
+          camel += part[0].toUpperCase() + part.substr(1).toLowerCase();
+
+        return camel;
+      }, '');
     }
   });
 };
