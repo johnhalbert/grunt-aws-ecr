@@ -9,7 +9,7 @@
 'use strict';
 
 const Promise = require('bluebird'),
-      ECR     = require('aws-sdk/clients/ecr'),
+      ECR     = require('aws-sdk/clients/ecr');
 
 module.exports = function(grunt) {
   grunt.registerMultiTask('aws_ecr', 'Grunt plugin for AWS\'s Elastic Container Repository service.', function() {
@@ -52,13 +52,21 @@ module.exports = function(grunt) {
     }
 
     function runEcrCommand(cmd, params) {
-      return ecr[`${kebabToCamel(cmd)}Async`](params);
+      const method = `${kebabToCamel(cmd)}Async`;
+      params = Object.keys(params).reduce((finalParams, key) => {
+        if (key !== 'command' && key !== 'callback')
+          finalParams[key] = params[key];
+        return finalParams;
+      }, {});
+      return ecr[method](params);
     }
 
     function kebabToCamel(kebab) {
-      let camel = kebab.split('-').reduce((camel, part, i) => {
+      return kebab.split('-').reduce((camel, part, i) => {
         if (i > 0)
           camel += part[0].toUpperCase() + part.substr(1).toLowerCase();
+        else
+          camel += part.toLowerCase();
 
         return camel;
       }, '');
